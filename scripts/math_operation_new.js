@@ -75,7 +75,7 @@ function replenish() {
 
   let randomNumber = getRandomInt(3, max);
   document.getElementById("answer").value = "";
-  document.getElementById("firstNumGen").value = randomNumber;
+  document.getElementById("firstNumGen").innerHTML  = randomNumber;
   let secondRandomNumber = getRandomInt(3, 20);
   let math_operations = document.getElementById("operations").value;
   if (document.getElementById("SquareMode").checked) {
@@ -86,7 +86,7 @@ function replenish() {
       secondRandomNumber = randomNumber + 1;
     }
   }
-  document.getElementById("secondNumGen").value = secondRandomNumber;
+  document.getElementById("secondNumGen").innerHTML  = secondRandomNumber;
 }
 function isNumber(evt) {
   evt = (evt) ? evt : window.event;
@@ -186,7 +186,9 @@ function insRow(numbers) {
 function scoreMark() {
   //this.value += "    ";
   let math_operations = document.getElementById("operations").value;
-  let calculatedAnswer = operations[math_operations](parseInt(formPractice.firstNumGen.value, 10), parseInt(formPractice.secondNumGen.value, 10));
+  let firstNumGen = document.getElementById("firstNumGen")
+  let secondNumGen = document.getElementById("secondNumGen")
+  let calculatedAnswer = operations[math_operations](parseInt(firstNumGen.innerHTML, 10), parseInt(secondNumGen.innerHTML, 10));
   let answer = parseInt(formPractice.answer.value, 10);
   if (calculatedAnswer === answer) {
     totalCorrect++;
@@ -194,8 +196,8 @@ function scoreMark() {
     totalIncorrect++;
   }
   insRow([
-    parseInt(formPractice.firstNumGen.value, 10),
-    parseInt(formPractice.secondNumGen.value, 10),
+    parseInt(firstNumGen.innerHTML, 10),
+    parseInt(secondNumGen.innerHTML, 10),
     parseInt(formPractice.answer.value, 10),
   ]);
   formPractice.answer.value = "";
