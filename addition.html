@@ -9,11 +9,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="ui_styles.css">
-  <style>
-   
-
-
-  </style>
 </head>
 
 <body>
@@ -21,10 +16,10 @@
     <h3>Addition (+) Practice</h3>
   </div>
   <div class="container">
-    <div class="row">
+    <div class="row row-content">
       <div class="col-sm-12">
         <label for="yourName">Name</label>&nbsp;&nbsp;&nbsp;
-        <input type="text" id="yourName" value="" />
+        <input type="text" id="yourName" value="" class="input-name"/>
         <input type="button" id="submit_name" class="btn btn-outline-primary btn-sm"
           onclick="App.uiOps.registerUser(document.getElementById('yourName').value)" value="Start" />
         <input type="button" id="end" class="btn btn-outline-primary btn-sm"
@@ -36,11 +31,11 @@
           <form id="formPractice">
             <div><label id="welcomeMessage" /></div>
             <div class="form-group row">
-              <button id="firstNumGen" class="btn btn-outline-primary btn-sm" disabled></button>
+              <label id="firstNumGen" class="label label-medium"></label>
               <img src="images/addition.jpg" alt="Mathematics - Addition Symbol + ">
-              <button id="secondNumGen" class="btn btn-outline-primary btn-sm" disabled></button>
+              <label id="secondNumGen" class="label label-medium"></label>
               <button id="equalTo" class="btn btn-sm" disabled>=</button>
-              <input type="text" id="answer" value="" onkeypress="return App.uiOps.isNumber(event);" />
+              <input type="text" id="answer" value="" class="input-answer" onkeypress="return App.uiOps.isNumber(event);" />
               <input type="button" class="btn btn-outline-primary btn-sm" autofocus id="submitAnswer"
                 onclick="App.uiOps.scoreMark(App.uiOps.ui.createQuestion());" value="GO!" /></label>
             </div>
