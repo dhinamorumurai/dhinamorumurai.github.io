@@ -11,61 +11,72 @@
 </head>
 <body>
   <div class="jumbotron text-center">
-    <h3>Subtraction (-) Practice</h3>
+    <h3>Higher Level (X times, square, cube) Practice</h3>
   </div>
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
         <label for="yourName">Name</label>&nbsp;&nbsp;&nbsp;
         <input type="text" id="yourName" value="" />
-        <input type="button" id="submit_name" onclick="App.uiOps.registerUser(document.getElementById('yourName').value)"
-          value="Start" />
-        <input type="button" id="end" onclick="App.uiOps.registerUser(document.getElementById('yourName').value)"
-          value="End" />
+        <input type="button" id="submit_name" onclick="registerUser(document.getElementById('yourName').value)"
+          value="Use Name" />
         <br /><br />
       </div>
       <div class="col-sm-12">
         <div id="main" style="visibility: hidden;">
           <form id="formPractice">
-            <div><label id="welcomeMessage" /></div>
-            <div><label id="totalQuestionsPracticed">Total Questions Practiced: 0</label></div>
-            <input type="hidden" id="operations" value="subtraction" />
-            <input type="hidden" id="maxInput" value="40" />
-<!-- 
+            <b><label id="welcomeMessage" /></b>&nbsp;&nbsp;
+            <input type="hidden" id="operations" value="level_up" />
+            <input type="hidden" id="max_input" value="40" />
+
             <div id="level" style="visibility: hidden;">
               <label for="SquareMode">Square mode</label>&nbsp;&nbsp;&nbsp;
               <input type="checkbox" id="SquareMode" value="true" />
-            </div> -->
-            <div class="form-group row">
-              <button id="firstNumGen" class="btn btn-outline-primary btn-sm" disabled></button>
-              <button id="operationSymbol" class="btn btn-sm" disabled>-</button>
-              <button id="secondNumGen" class="btn btn-outline-primary btn-sm" disabled></button>
-              <button id="equalTo" class="btn btn-sm" disabled>=</button>
-              <input type="text" id="answer" value="" onkeypress="return App.uiOps.isNumber(event);" />
-              <input type="button" class="btn btn-outline-primary btn-sm" autofocus  id="submitAnswer"onclick="App.uiOps.scoreMark(App.uiOps.ui.createQuestion());" value="Submit Answer" /></label>
             </div>
+            <label for="firstNumGen">First Number</label>&nbsp;&nbsp;&nbsp;
+            <input type="text" id="firstNumGen" value="" readonly="readonly" /><br />
+            <label for="secondNumGen">Second Number</label>&nbsp;&nbsp;&nbsp;
+            <input type="text" id="secondNumGen" value="" readonly="readonly" /><br />
+            <label for="answer">Answer</label>&nbsp;&nbsp;&nbsp;
+            <input type="text" id="answer" value="" onkeypress="return isNumber(event)" />
+            <label for="submitAnswer"><input type="button" id="submitAnswer" onclick="scoreMark()"
+                value="Submit Answer" /></label>&nbsp;&nbsp;&nbsp;
 
+            <br /><br />
+            <a
+              href="https://thumbs.dreamstime.com/z/x-multiplication-table-vector-illustration-students-multiplication-table-x-98833796.jpg">
+              Table Reference<br /><br />
+            </a>
             <div id="studentPracticeSummary">
+              <label id="totalQuestionsPracticed">Total Questions Practiced: 0</label>
+              <br></br>
               <label id="summary">Summary</label>&nbsp;&nbsp;&nbsp;
             </div>
           </form>
           <div>
             <table id="practicedResults" border="1">
               <tr>
+                <th colspan="6">Result Table<br />
+                  <div id="dateTime">
+
+                  </div>
+                </th>
+              </tr>
+              <tr>
                 <th>
-                  Number
+                  FirstNum
                 </th>
                 <th>
-                  Number
+                  SecondNum
                 </th>
                 <th>
-                  Your Answer
+                  Answer
                 </th>
                 <th>
-                  Correct
+                  Submission
                 </th>
                 <th>
-                  Clue
+                  Explanation
                 </th>
                 <th>
                   Result
@@ -73,15 +84,8 @@
               </tr>
             </table>
           </div>
-          <a href="addition.html">Addition</a>
+          <a href="multiplication.html">Multiplication</a>&nbsp;&nbsp;&nbsp;
           <a href="subtraction.html">Subtraction</a>
-          <a href="multiplication.html">Multiplication</a>
-          <a href="division.html">Division</a>
-          <a
-          href="https://thumbs.dreamstime.com/z/x-multiplication-table-vector-illustration-students-multiplication-table-x-98833796.jpg">
-          Table Reference<br /><br />
-        </a>
-
         </div>
       </div>
 
@@ -89,6 +93,6 @@
   </div>
 
 </body>
-<script src="scripts/bundle.js"></script>
+<script src="scripts/math_operation.js"></script>
 
 </html>
