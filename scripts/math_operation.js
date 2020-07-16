@@ -11,6 +11,7 @@ let sid='';
 
 function yourNameKeyboardHandler() {
   const input = document.getElementById('yourName');
+  input.focus();
   input.addEventListener('keyup', (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -30,9 +31,14 @@ function answerKeyboardHandler() {
 function tabAndEnterHandler(e) {
   const KEYCODE_TAB = 9;
   const KEYCODE_ENTER = 13;
-  if (e.keyCode == KEYCODE_TAB || e.keyCode == KEYCODE_ENTER) {
-    event.preventDefault();
-    document.getElementById('submitAnswer').click();
+  if (e.keyCode === KEYCODE_TAB || e.keyCode === KEYCODE_ENTER) {
+    if (document.getElementById('answer').value && document.getElementById('answer').value.length >= 1) {
+      e.preventDefault();
+      document.getElementById('submitAnswer').click();
+    } else {
+      console.log('Tab usage without input!');
+      e.preventDefault();
+    }
   }
 }
 
@@ -66,6 +72,12 @@ window.addEventListener('load', (_event) => {
 export { uiTools as ui };
 
 export function scoreMark(question) {
+  if (document.getElementById('answer').value && document.getElementById('answer').value.length >= 1) {
+    //do nothing..
+  } else {
+    console.log('enter usage without input!');
+    return false;
+  }
   if (Evaluator.evaluateQuestion(question)) {
     totalCorrect++;
   } else {
@@ -101,13 +113,13 @@ export function registerUser(studentId) {
   };
   let priorPracticeDetails = localStorage.getItem(studentId.toLowerCase());
 
-  sid = new Date().toISOString();
-  sid = `Practice_${studentId}@${sid}`;
+  let sessionTime = new Date().toISOString();
+  sid = `Practice_${studentId}@${sessionTime}`;
 
   if (priorPracticeDetails) {
-    welcomeMessage = `<b>${studentId} is amazing person!</b> ${studentId} practices like champion!<br/>Identifier - ${sid}`;
+    welcomeMessage = `<b>${studentId} is amazing person!</b> ${studentId} practices like champion!<br/>Start time : ${sessionTime}`;
   } else {
-    welcomeMessage = `<b>Hi! ${studentId}, you are courageous!</b> 1000 miles journey begins with single step!<br/>Identifier - ${sid}`;
+    welcomeMessage = `<b>Hi! ${studentId}, you are courageous!</b> 1000 miles journey begins with single step!<br/>Start time : ${sessionTime}`;
   }
   startPractice();
   if (!priorPracticeDetails) {
@@ -130,7 +142,7 @@ export function registerUser(studentId) {
 export function replenish() {
   const max = parseInt(document.getElementById('maxInput').value, 10);
   const randomNumber = Random.getRandomIntInclusiveWithExceptions(3, max, [10]);
-  const secondRandomNumber = Random.getRandomIntInclusive(3, max, [10]);
+  const secondRandomNumber = Random.getRandomIntInclusive(3, max);
   uiTools.populateNewQuestion(randomNumber, secondRandomNumber);
 }
 
