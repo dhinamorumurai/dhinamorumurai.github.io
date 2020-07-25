@@ -1,5 +1,6 @@
-import Random from "./random";
-import * as fc from "fast-check";
+import * as fs from "fs";
+import Evaluator from "./model/Evaluator";
+import extractSessions from './analyze';
 
 // expect.extend({
 //   toBeWithinRange(received, floor, ceiling) {
@@ -19,7 +20,7 @@ import * as fc from "fast-check";
 //   },
 // });
 
-// test("Random number should be within boundry of 3 and 7", () => {
+// test("Random number should be within boundry", () => {
 //   expect(Random.getRandomIntInclusive(3, 7)).toBeWithinRange(3, 7);
 // });
 
@@ -36,20 +37,23 @@ import * as fc from "fast-check";
 
 // test("Random number should not be out of boundry", () => {
 //   fc.assert(
-//     fc.property(fc.integer(1,7), fc.integer(9,15), (a, b) => {
-//       const answer = Random.getRandomIntInclusiveWithExceptions(a, b, [ parseInt(10, 10) ]);
+//     fc.property(fc.integer(1,12), fc.integer(1,12), (a, b) => {
+//       const answer = Random.getRandomIntInclusiveWithExceptions(a, b, [10]);
 //       expect(answer).not.toBe(100);
+
 //     })
 //   );
 // });
 
-test("Random number should be within boundry", () => {
-  fc.assert(
-    fc.property( fc.tuple(fc.integer(2, 7), fc.integer(8, 15)), (inputs) => {
-      inputs.sort((x, y) => x - y);
-      const answer = Random.getRandomIntInclusiveWithExceptions(inputs[0], inputs[1], [10, 12]);
-      expect(answer).not.toBe(10);
-      expect(answer).toBeGreaterThan(1);
-    })
-  , {verbose: true});
+test("Analyze the submission", () => {
+  const string = fs.readFileSync('sample_questions.json').toString();
+  let localStorage = JSON.parse(string);
+  let result = extractSessions("Kavin", localStorage);
+  console.log(`Result returned ${result}` );
+  expect(result.totalQuestionsPracticed).toBeGreaterThan(112);
+  expect(result.totalPracticeSessions).toBeGreaterThan(112);
+  
+  //expect(questions.length).toBeGreaterThan(27);
+  //console.log(JSON.stringify(Evaluator.analyze(questions), 2, null));
+
 });

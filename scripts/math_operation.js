@@ -1,6 +1,7 @@
-import Evaluator from './model/Evaluator';
 import uiTools from './ui_tools';
 import Random from './random';
+import extractSessions from './analyze';
+import Evaluator from './model/Evaluator';
 
 const startTime = new Date();
 let totalCorrect = 0;
@@ -47,6 +48,8 @@ function startPractice() {
   document.getElementById('main').style.visibility = 'visible';
   document.getElementById('summary').innerHTML = '';
   document.getElementById('totalQuestionsPracticed').innerHTML = 'Total Questions Practiced:  0';
+  totalCorrect = 0;
+  totalIncorrect = 0;
   /* If someone doesn't cloes this window, but still using it! */
   const staleResults = document.getElementById('practicedResults').rows.length;
   if (staleResults > 1) {
@@ -139,10 +142,37 @@ export function registerUser(studentId) {
   document.getElementById('answer').focus();
 }
 
+export function analyzeUserPracticeSessions(studentId) {
+  const defaultDetails = {
+    studentId,
+    sessions: [],
+  };
+  let priorPracticeDetails = localStorage.getItem(studentId.toLowerCase());
+
+  let sessionTime = new Date().toISOString();
+  sid = `Practice_${studentId}@${sessionTime}`;
+
+  // if (priorPracticeDetails) {
+  //   welcomeMessage = `<b>${studentId} is amazing person!</b> ${studentId} practices like champion!<br/>Start time : ${sessionTime}`;
+  // } else {
+  //   welcomeMessage = `<b>Hi! ${studentId}, you are courageous!</b> 1000 miles journey begins with single step!<br/>Start time : ${sessionTime}`;
+  // }
+
+  //1. Access the local storage
+  //2. Print the total count of sessions in welcomeMessage
+
+  let appreciation = extractSessions(studentId, localStorage);
+  welcomeMessage = `<b>${studentId}</b>, you have completed ${appreciation.totalPracticeSessions} number of practice sessions`;
+  console.log(appreciation);
+  return appreciation;
+  
+}
 export function replenish() {
   const max = parseInt(document.getElementById('maxInput').value, 10);
-  const randomNumber = Random.getRandomIntInclusiveWithExceptions(3, max, [10]);
-  const secondRandomNumber = Random.getRandomIntInclusive(3, max);
+  const min = parseInt(document.getElementById('minInput').value, 10);
+  const excludes = ("10,"+ document.getElementById('excludes').value ).split(",").filter(i => i !== "").map(i => parseInt(i,10))  
+  const randomNumber = Random.getRandomIntInclusiveWithExceptions(min, max, excludes);
+  const secondRandomNumber = Random.getRandomIntInclusive(min, max);
   uiTools.populateNewQuestion(randomNumber, secondRandomNumber);
 }
 
