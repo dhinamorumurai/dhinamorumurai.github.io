@@ -1,6 +1,8 @@
 import Question from './model/Question';
 import Evaluator from './model/Evaluator';
 import explanation from './model/AnswerTips';
+import Random from './random';
+import chunk from 'lodash/chunk';
 
 function createQuestion() {
 
@@ -15,6 +17,46 @@ function createQuestion() {
     new Date()
   );
 }
+
+function getRandomImage() {
+  const images = ['kuthirai', 'kuthirai', 'kuthirai'];
+  const selectedImage =  images[Random.getRandomIntInclusive(0,images.length-1)];
+  console.log('Selected image ' + selectedImage);
+  return selectedImage;
+}
+
+
+function isLessThanOr3(number) {
+  return (number <= 3 );
+}
+
+function isOddOrDivisibleBy3(number) {
+  return (number <= 3 ) ||  (number % 2 === 1)  || (number % 3 === 0);
+}
+
+function getChunkSize(number) {
+  return isOddOrDivisibleBy3(number) ? 3 : 2;
+}
+
+function getFirstOperand(number) {
+  console.log(`input to partition ${number}`)
+  const image = getRandomImage();
+  if(isLessThanOr3(number)) {
+    const rows = Array.from(Array(number).keys()).map(i => `<td align="center" valign="top"><img src="media/svg/${image}.svg" width="50" height="50"  style="margin: 1px;"></td>`);  
+    return '<tr>' + rows.join('') + '</tr>';  
+  }
+  const chunkSize = getChunkSize(number);  
+  const rows = Array.from(Array(number).keys()).map(i => `<td align="center" valign="top"><img src="media/svg/${image}.svg" width="50" height="50"  style="margin: 1px;"></td>`);  
+  const partition = chunk(rows, chunkSize);
+  return '<tr>' + partition.map(group => group.join('')).join('</tr><tr>') + '</tr>';  
+}
+
+function getMultiplicationOperand(number, number2) {
+  let colSpan = getChunkSize(number);
+
+  return Array.from(Array(number2).keys()).map(i => getFirstOperand(number)+`<tr><td colspan="${colSpan}"><hr/></td></tr>`).join('');
+}
+
 
 function appendResult(question) {
   const x = document.getElementById('practicedResults').insertRow(1);
@@ -42,6 +84,25 @@ export function populateNewQuestion(randomNumber, secondRandomNumber) {
     document.getElementById('secondNumGen').innerHTML = input[0];
     return;
   }
+  if(document.getElementById('operations').value == 'junior_addition') {
+    const input = [randomNumber, secondRandomNumber];
+    input.sort((a,b) => (a-b));
+    document.getElementById('firstNumGraph').innerHTML = getFirstOperand(randomNumber);
+    document.getElementById('secondNumGraph').innerHTML = getFirstOperand(secondRandomNumber);
+    document.getElementById('firstNumGen').innerHTML = randomNumber;
+    document.getElementById('secondNumGen').innerHTML = secondRandomNumber;
+      return;
+  }
+  if(document.getElementById('operations').value == 'junior_multiplication') {
+    const input = [randomNumber, secondRandomNumber];
+    input.sort((a,b) => (a-b));
+    document.getElementById('firstNumGraph').innerHTML = getMultiplicationOperand(randomNumber, secondRandomNumber);
+    //document.getElementById('secondNumGraph').innerHTML = getFirstOperand(secondRandomNumber);
+    document.getElementById('firstNumGen').innerHTML = randomNumber;
+    document.getElementById('secondNumGen').innerHTML = secondRandomNumber;
+      return;
+  }
+
   document.getElementById('answer').value = '';
   document.getElementById('firstNumGen').innerHTML = randomNumber;
   document.getElementById('secondNumGen').innerHTML = secondRandomNumber;
