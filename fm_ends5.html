@@ -23,7 +23,7 @@
         <input type="button" id="submit_name" class="btn btn-outline-primary btn-sm"
           onclick="App.uiOps.registerUser(document.getElementById('yourName').value)" value="Start" />
         <input type="button" id="end" class="btn btn-outline-primary btn-sm"
-          onclick="App.uiOps.registerUser(document.getElementById('yourName').value)" value="Rest" />
+          onclick="App.uiOps.registerUser(document.getElementById('yourName').value)" value="Reset" />
         <br /><br />
       </div>
       <div class="col-sm-12">
@@ -38,7 +38,7 @@
               <label id="firstNumGen" class="label label-medium"></label>
               <img src="images/multiplication.jpg" alt="Mathematics - Multiplication Symbol + ">
               <label id="secondNumGen" class="label label-medium"></label>
-              <img id="equalTo" src="images/img_equal_symbol.svg" alt="=" class="img-equalto">
+              <button id="equalTo" class="btn btn-sm" disabled>=</button>
               <input type="text" id="answer" value="" class="input-answer" onkeypress="return App.uiOps.isNumber(event);" />
               <input type="button" class="btn btn-outline-primary btn-sm" autofocus id="submitAnswer"
                 onclick="App.uiOps.scoreMark(App.uiOps.ui.createQuestion());" value="Go" />

@@ -13,7 +13,7 @@
 
 <body>
   <div class="jumbotron text-center">
-    <h3>Multiplication <img src="images/multiplication.jpg"> Practice</h3>
+    <h3>Same Tens - Multiplication Level <img src="images/multiplication.jpg"> Practice</h3>
   </div>
   <div class="container">
     <div class="row">
@@ -44,10 +44,10 @@
                 onclick="App.uiOps.scoreMark(App.uiOps.ui.createQuestion());" value="Go" />
             </div>
             <input type="hidden" id="operations" value="multiplication" />
-            <input type="hidden" id="maxInput" value="11" />
-            <input type="hidden" id="minInput" value="3" />
-      			<input type="hidden" id="excludes" value="2,0" />
-
+            <input type="hidden" id="minInput" value="11" />
+      			<input type="hidden" id="excludes" value="5,10,15,11,20" />
+            <input type="hidden" id="maxInput" value="100" />
+            <input type="hidden" id="generatorFunction" value="getSameTens" />
             <div id="studentPracticeSummary">
               <label id="summary">Summary</label>&nbsp;&nbsp;&nbsp;
             </div>
@@ -80,8 +80,6 @@
           <a href="subtraction.html">Subtraction</a>
           <a href="multiplication.html">Multiplication</a>
           <a href="division.html">Division</a>
-          <br/><a href="analysis.html">Analysis</a>
-  
           <a
             href="https://thumbs.dreamstime.com/z/x-multiplication-table-vector-illustration-students-multiplication-table-x-98833796.jpg">
             Table Reference<br /><br />
@@ -91,6 +89,14 @@
         </div>
       </div>
 
+    </div>
+    
+    <div>
+      Two digit multiplication without ones-together forming 10!<br/>
+      56×58<br/>
+      (50x(56+8)) + (6 x 8)<br/>
+      (50 x 64)  + (6 x 8)<br/> 
+      3200 + 48 = 3248<br/>
     </div>
   </div>
 

@@ -38,12 +38,11 @@
               <label id="firstNumGen" class="label label-medium"></label>
               <img src="images/multiplication.jpg" alt="Mathematics - Multiplication Symbol + ">
               <label id="secondNumGen" class="label label-medium"></label>
-              <img id="equalTo" src="images/img_equal_symbol.svg" alt="=" class="img-equalto">
+              <button id="equalTo" class="btn btn-sm" disabled>=</button>
               <input type="text" id="answer" value="" class="input-answer" onkeypress="return App.uiOps.isNumber(event);" />
               <input type="button" class="btn btn-outline-primary btn-sm" autofocus id="submitAnswer"
                 onclick="App.uiOps.scoreMark(App.uiOps.ui.createQuestion());" value="Go" />
             </div>
-            <div><label id="totalQuestionsPracticed">Total Questions Practiced: 0</label></div>
             <input type="hidden" id="operations" value="multiplication" />
             <input type="hidden" id="minInput" value="9" />
       			<input type="hidden" id="excludes" value="5,10,15,11,20" />
