@@ -11,6 +11,12 @@ let welcomeMessage = '';
 let lastSubmissionTime;
 let sid = '';
 
+window.addEventListener('load', (_event) => {
+  replenish();
+  answerKeyboardHandler();
+  yourNameKeyboardHandler();
+});
+
 function yourNameKeyboardHandler() {
   const input = document.getElementById('yourName');
   input.focus();
@@ -38,14 +44,15 @@ function tabAndEnterHandler(e) {
       e.preventDefault();
       document.getElementById('submitAnswer').click();
     } else {
-      console.log('Tab usage without input!');
       e.preventDefault();
     }
   }
 }
 
 function startPractice() {
-  document.getElementById('welcomeMessage').innerHTML = welcomeMessage;
+  if(document.getElementById('welcomeMessage')) {
+    document.getElementById('welcomeMessage').innerHTML = welcomeMessage;
+  }
   document.getElementById('main').style.visibility = 'visible';
   document.getElementById('summary').innerHTML = '';
   totalCorrect = 0;
@@ -64,12 +71,6 @@ function finalizeSubmit() {
   document.getElementById('answer').focus();
   //document.getElementById('answer').scrollIntoView();
 }
-
-window.addEventListener('load', (_event) => {
-  replenish();
-  answerKeyboardHandler();
-  yourNameKeyboardHandler();
-});
 
 function getImageForCorrectIncorrect(latestSubmittedAnswer) {
 
@@ -157,23 +158,10 @@ export function registerUser(studentId) {
 }
 
 export function analyzeUserPracticeSessions(studentId) {
-  const defaultDetails = {
-    studentId,
-    sessions: [],
-  };
-  let priorPracticeDetails = localStorage.getItem(studentId.toLowerCase());
 
   let sessionTime = new Date().toISOString();
   sid = `Practice_${studentId}@${sessionTime}`;
 
-  // if (priorPracticeDetails) {
-  //   welcomeMessage = `<b>${studentId} is amazing person!</b> ${studentId} practices like champion!<br/>Start time : ${sessionTime}`;
-  // } else {
-  //   welcomeMessage = `<b>Hi! ${studentId}, you are courageous!</b> 1000 miles journey begins with single step!<br/>Start time : ${sessionTime}`;
-  // }
-
-  //1. Access the local storage
-  //2. Print the total count of sessions in welcomeMessage
 
   let appreciation = extractSessions(studentId, localStorage);
   welcomeMessage = `<b>${studentId}</b>, you have completed ${appreciation.totalPracticeSessions} number of practice sessions`;
@@ -184,7 +172,14 @@ export function analyzeUserPracticeSessions(studentId) {
 export function replenish() {
   const max = parseInt(document.getElementById('maxInput').value, 10);
   const min = parseInt(document.getElementById('minInput').value, 10);
-  const generatorFunction = document.getElementById('generatorFunction') && document.getElementById('generatorFunction').value
+  const generatorFunction = document.getElementById('generatorFunction') && document.getElementById('generatorFunction').value;
+  const targetted = document.getElementById('targetted') && parseInt(document.getElementById('targetted').value, 10);
+
+  if(document.getElementById('replenishType') && 'SHUFFLE'.toUpperCase() === (document.getElementById('replenishType').value)) {
+    let shuffledNumber =  Generator.getShuffledRange(min, max, [0,1]);
+    uiTools.shuffleNewQuestion(targetted, shuffledNumber);
+    return;
+  } 
 
   const excludes = ('10,' + document.getElementById('excludes').value).split(',').filter(i => i !== '').map(i => parseInt(i, 10))
   let randomNumbers = Generator.getTwoNumbers(min, max, excludes);
@@ -196,6 +191,13 @@ export function replenish() {
   }
   if ('getSameTens'.startsWith(generatorFunction)) {
     randomNumbers = Generator.getSameTens(min, max, excludes)
+  }
+  if ('getJunior5s'.startsWith(generatorFunction)) {
+    randomNumbers = Generator.getJunior5s(min, max, excludes)
+  }
+  if(targetted && targetted > 0) {
+    uiTools.populateNewQuestion(targetted, randomNumbers[1]);
+    return;
   }
   uiTools.populateNewQuestion(randomNumbers[0], randomNumbers[1]);
 }

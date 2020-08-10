@@ -6,7 +6,8 @@ const entries = require('lodash/entries');
 
 export default function extractSessions(name, localStorage) {
   const sessions = Object.keys(localStorage).filter((i) => i.indexOf(`Practice_${name}@`) != -1);
-  // console.log(`Sessions ${sessions}`)
+  sessions.sort((a,b) => new Date(b.split('@')[1]) - new Date(a.split('@')[1]) );
+
   const pastSessions = sessions.map((t) => t.split('@'));
 
   const daysOfPractice = pastSessions.map((a) => Date.parse(a[1])).map((t) => { const date = new Date(); date.setTime(t); return date; });
@@ -38,6 +39,8 @@ export default function extractSessions(name, localStorage) {
   appreciation.failedByOperation = countBy(failedQuestions, 'operation');
   appreciation.successByOperation = countBy(sucessfulQuestions, 'operation');
   appreciation.operationsBy = countBy(allAttemptedQuestions, 'operation');
+  appreciation.recentSessions = sessions.slice(0, 10);
+  appreciation.studentId = name;
 
   return appreciation;
 }

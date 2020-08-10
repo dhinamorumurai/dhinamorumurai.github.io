@@ -70,6 +70,19 @@ function appendResult(question) {
   populateEmptyResult();
 }
 
+export function shuffleNewQuestion(targetted, newShuffledNumber) {
+    let shuffledNumber = newShuffledNumber;
+    if(document.getElementById('shuffledNumber') && document.getElementById('shuffledNumber').value) {
+      shuffledNumber = document.getElementById('shuffledNumber').value.split(',');
+    }
+  const [first, ...rest]  = [...shuffledNumber];
+  const input = [targetted, first];
+  document.getElementById('firstNumGen').innerHTML = input[1];
+  document.getElementById('secondNumGen').innerHTML = input[0];
+  document.getElementById('shuffledNumber').value = [rest, first].join(',');
+  return;  
+}
+
 export function populateNewQuestion(randomNumber, secondRandomNumber) {
   if(document.getElementById('operations').value === 'subtraction') {
     const input = [randomNumber, secondRandomNumber];
@@ -136,8 +149,21 @@ function showDetails(data, el) {
   showConsolidatedSummary(data, newTable)
 }
 
+function showSessionDetails(sessionName, elementId) {
+  let practicedSession = JSON.parse(localStorage.getItem(sessionName));
+  const failed = practicedSession.filter(q => !Evaluator.evaluateQuestion(q));
+  failed.forEach(q => { q.expected = Evaluator.answer(q); });
+  failed.sort((a,b) =>  (a.firstNum * a.secondNum) - (b.firstNum * b.secondNum));
+  console.log(`failed  - ${failed}`);
+  const result = failed.map( q => `${q.firstNum} ${q.operation} ${q.secondNum} = ${q.expected} --> <strike>${q.submittedAnswer}</strike>`).join('<br/>');
+  document.getElementById(elementId).innerHTML = result;
+  event.preventDefault();
+  return result;
+}
+
+
 export function showConsolidatedSummary(summary, table) {
-  
+    
   Object.entries(summary)
   .filter(keyValue => keyValue[0].indexOf('_')!=0)
   .filter(keyValue => typeof keyValue[1] !== 'object')
@@ -164,8 +190,18 @@ export function showConsolidatedSummary(summary, table) {
     const cell2 = row.insertCell(1);
     cell.innerHTML = `<b>${keyValue[0]}</b>`;
     showDetails(keyValue[1], cell2); });
+
+    if(summary.recentSessions) {
+      const recentRow = table.insertRow(0);
+      const cell = recentRow.insertCell(0);
+      cell.innerHTML = `<b>recentSessions</b>`;
+      let html = summary.recentSessions.map((e,i) => `<label id='failure_${i}' /><a href='#' onclick=javascript:App.uiOps.ui.showSessionDetails('${e.trim()}','failure_${i}');> ${e} </a>`).join('<br/>');
+      console.log(`html - ${html}`);
+      recentRow.insertCell(1).innerHTML =  html;
+    }
+
 }
 
-const uiTools = { createQuestion, appendResult, populateNewQuestion, showConsolidatedSummary };
+const uiTools = { createQuestion, appendResult, populateNewQuestion, showConsolidatedSummary, showSessionDetails, shuffleNewQuestion };
 
 export default uiTools;
